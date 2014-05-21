@@ -6,7 +6,9 @@
   "dependencies": {
     "express": "^4.3.0",
     "irc": "^0.3.6",
-    "logfmt": "^1.1.2"
+    "leaderboard": "0.0.9",
+    "logfmt": "^1.1.2",
+    "redis": "^0.10.2"
   },
   "devDependencies": {},
   "scripts": {
