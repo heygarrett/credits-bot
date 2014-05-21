@@ -34,15 +34,17 @@ bot.addListener("join", function(channel, who) {
 bot.addListener("message", function(nick, to, text, message) {
     console.log(nick + " => " + text);
 
-    var messageList = text.replace(new RegExp("[^a-zA-Z ]", "gi"), "").toLowerCase().split(" ");
+    var messageList = text.replace(new RegExp("[^a-zA-Z:, ]", "gi"), "").split(" ");
+    console.log(messageList);
 
-    if (new RegExp("pon(y|ies)", "gi").test(text)){
+    if (new RegExp("pon(y|ies)", "gi").test(text)) {
         bot.say(to, "OMG PONIES!!");
     }
 
-    if (text.indexOf("nodebot") == 0) {
-        bot.say(to, "Sorry " + nick + ", but I don't do anything yet.");
+    if (new RegExp(":$", "gi").test(messageList[0])) {
+        bot.say(to, messageList[0] + " Ignore " + nick + ". They don't know what they're talking about.");
     }
+
 });
 
 bot.addListener("quit", function (nick, reason, channels, message) {
