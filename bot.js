@@ -14,8 +14,8 @@ app.listen(port, function() {
 });
 
 var config = {
-    channels: ["#learnprogramming", "#lpmc"],
-    server: "irc.freenode.net",
+    channels: ["#chat"],
+    server: "mccs.stu.marist.edu",
     botName: "nodebot"
 };
 
@@ -25,12 +25,17 @@ var bot = new irc.Client(config.server, config.botName, {
     channels: config.channels
 });
 
+var channelNicks = [];
+
 bot.addListener("join", function(channel, who) {
     console.log(who + " joined the server.");
 });
 
 bot.addListener("message", function(nick, to, text, message) {
-    console.log(nick + ": " + text);
+    console.log(nick + " => " + text);
+
+    var messageList = text.replace(new RegExp("[^a-zA-Z ]", "gi"), "").toLowerCase().split(" ");
+
     if (text.indexOf("nodebot") == 0) {
         bot.say(to, "Sorry " + nick + ", but I don't do anything yet.");
     }
@@ -38,4 +43,11 @@ bot.addListener("message", function(nick, to, text, message) {
 
 bot.addListener("quit", function (nick, reason, channels, message) {
     console.log(who + " quit the server.");
+});
+
+bot.addListener("names", function (channel, nicks) {
+    channelNicks = nicks;
+    for (var i = channelNicks - 1; i > 0; --i) {
+        channelNicks[i] = channelNicks[i].replace(new RegExp("[@+&:]", "gi"), "");
+    }
 });
