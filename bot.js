@@ -4,6 +4,8 @@ var config = {
     botName: "nodebot"
 };
 
+var port = process.env.PORT || 5000;
+
 var irc = require("irc");
 
 var bot = new irc.Client(config.server, config.botName, {
