@@ -45,6 +45,10 @@ bot.addListener("message", function(nick, to, text, message) {
         bot.say(to, messageList[0] + " Ignore " + nick + ". They don't know what they're talking about.");
     }
 
+    if (new RegExp("got a plus", "gi").test(text))) {
+        bot.say(to, messageList[1] + " Congrats!");
+    }
+
 });
 
 bot.addListener("quit", function (nick, reason, channels, message) {
