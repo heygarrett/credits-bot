@@ -44,10 +44,3 @@ bot.addListener("message", function(nick, to, text, message) {
 bot.addListener("quit", function (nick, reason, channels, message) {
     console.log(who + " quit the server.");
 });
-
-bot.addListener("names", function (channel, nicks) {
-    channelNicks = nicks;
-    for (var i = channelNicks - 1; i > 0; --i) {
-        channelNicks[i] = channelNicks[i].replace(new RegExp("[@+&:]", "gi"), "");
-    }
-});
