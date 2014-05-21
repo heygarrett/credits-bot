@@ -1,6 +1,3 @@
-var server = http.createServer(app);
-server.listen(process.env.PORT || 5000);
-
 var config = {
     channels: ["#chat"],
     server: "mccs.stu.marist.edu",
