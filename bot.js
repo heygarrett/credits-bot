@@ -4,13 +4,13 @@ var config = {
     botName: "nodebot"
 };
 
-var port = process.env.PORT || 5000;
-
 var irc = require("irc");
 
 var bot = new irc.Client(config.server, config.botName, {
     channels: config.channels
 });
+
+bot.listen(server.listen(process.env.PORT || 5000);
 
 bot.addListener("join", function(channel, who) {
 	bot.say(channel, who + "...dude...welcome back!");
