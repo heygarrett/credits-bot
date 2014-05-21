@@ -42,5 +42,5 @@ bot.addListener("message", function(nick, to, text, message) {
 });
 
 bot.addListener("quit", function (nick, reason, channels, message) {
-    console.log(who + " quit the server.");
+    console.log(nick + " quit the server.");
 });
