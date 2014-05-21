@@ -1,3 +1,6 @@
+var server = http.createServer(app);
+server.listen(process.env.PORT || 5000);
+
 var config = {
     channels: ["#chat"],
     server: "mccs.stu.marist.edu",
@@ -9,8 +12,6 @@ var irc = require("irc");
 var bot = new irc.Client(config.server, config.botName, {
     channels: config.channels
 });
-
-bot.listen(server.listen(process.env.PORT || 5000);
 
 bot.addListener("join", function(channel, who) {
 	bot.say(channel, who + "...dude...welcome back!");
