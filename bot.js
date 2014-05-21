@@ -14,8 +14,8 @@ app.listen(port, function() {
 });
 
 var config = {
-    channels: ["#chat"],
-    server: "mccs.stu.marist.edu",
+    channels: ["#learnprogramming", "#lpmc"],
+    server: "irc.freenode.net",
     botName: "nodebot"
 };
 
@@ -26,15 +26,16 @@ var bot = new irc.Client(config.server, config.botName, {
 });
 
 bot.addListener("join", function(channel, who) {
-	bot.say(channel, who + "...dude...welcome back!");
+    console.log(who + " joined the server.");
 });
 
 bot.addListener("message", function(nick, to, text, message) {
+    console.log(nick + ": " + text);
     if (text.indexOf("nodebot") == 0) {
         bot.say(to, "Sorry " + nick + ", but I don't do anything yet.");
     }
 });
 
 bot.addListener("quit", function (nick, reason, channels, message) {
-    bot.say(channels, "See you later " + nick + "!");
+    console.log(who + " quit the server.");
 });
