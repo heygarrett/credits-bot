@@ -1,5 +1,5 @@
 var config = {
-    channels: ["#chat],
+    channels: ["#chat"],
     server: "mccs.stu.marist.edu",
     botName: "nodebot"
 };
