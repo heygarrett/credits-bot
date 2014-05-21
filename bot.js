@@ -36,6 +36,9 @@ bot.addListener("message", function(nick, to, text, message) {
 
     var messageList = text.replace(new RegExp("[^a-zA-Z ]", "gi"), "").toLowerCase().split(" ");
 
+    if (new RegExp("pon(?=/y|ies/", "gi").test(text) {
+        bot.say(to, "OMG PONIES!!");
+
     if (text.indexOf("nodebot") == 0) {
         bot.say(to, "Sorry " + nick + ", but I don't do anything yet.");
     }
