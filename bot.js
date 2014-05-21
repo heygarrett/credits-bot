@@ -46,7 +46,7 @@ bot.addListener("message", function(nick, to, text, message) {
     }
 
     if (new RegExp("got a plus", "gi").test(text)) {
-        bot.say(to, messageList[1] + " Congrats!");
+        bot.say(to, messageList[0] + " Congrats!");
     }
 
 });
