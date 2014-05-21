@@ -34,3 +34,7 @@ bot.addListener("message", function(nick, to, text, message) {
         bot.say(to, "Sorry " + nick + ", but I don't do anything yet.");
     }
 });
+
+bot.addListener("quit", function (nick, reason, channels, message) {
+    bot.say(channels, "See you later " + nick + "!");
+});
