@@ -30,8 +30,7 @@ bot.addListener("join", function(channel, who) {
 });
 
 bot.addListener("message", function(nick, to, text, message) {
-    var messageList = message.text.split(" ");
-    if (messageList[0].indexOf("nodebot") == 0) {
+    if (text.indexOf("nodebot") == 0) {
         bot.say(to, "Sorry " + nick + ", but I don't do anything yet.");
     }
 });
