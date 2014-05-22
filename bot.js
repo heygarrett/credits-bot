@@ -46,7 +46,7 @@ bot.addListener("message", function(nick, to, text, message) {
     }
 
     if (new RegExp("fuck|shit|bitch|cunt|ass|hell", "gi").test(text)) {
-        bot.say(to, nick + " Do you kiss your mother with that mouth?");
+        bot.say(to, nick + ": Do you kiss your mother with that mouth?");
     }
 
 });
