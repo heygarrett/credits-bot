@@ -45,8 +45,8 @@ bot.addListener("message", function(nick, to, text, message) {
         bot.say(to, messageList[0] + " Ignore " + nick + ". They don't know what they're talking about.");
     }
 
-    if (new RegExp("got a plus", "gi").test(text)) {
-        bot.say(to, messageList[0] + " Congrats!");
+    if (new RegExp("fuck|shit|bitch|cunt|ass", "gi").test(text)) {
+        bot.say(to, messageList[0] + " Do you kiss your mother with that mouth?");
     }
 
 });
