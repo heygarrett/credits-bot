@@ -14,8 +14,8 @@ app.listen(port, function() {
 });
 
 var config = {
-    channels: ["#chat"],
-    server: "mccs.stu.marist.edu",
+    channels: ["#learnprogramming"],
+    server: "irc.freenode.net",
     botName: "nodebot"
 };
 
@@ -46,9 +46,9 @@ bot.addListener("message", function(nick, to, text, message) {
     var messageList = text.replace(new RegExp("[^a-zA-Z:, ]", "gi"), "").split(" ");
     console.log(messageList);
 
-    if (new RegExp("pon(y|ies)", "gi").test(text)) {
-        bot.say(to, "OMG PONIES!!");
-    }
+    // if (new RegExp("pon(y|ies)", "gi").test(text)) {
+    //     bot.say(to, "OMG PONIES!!");
+    // }
 
     if (new RegExp("got a plus", "gi").test(text)) {
         bot.say(to, messageList[0] + " Congrats!");
