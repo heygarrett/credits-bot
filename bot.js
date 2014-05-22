@@ -29,6 +29,8 @@ var channelNicks = [];
 
 bot.addListener("join", function(channel, who) {
     console.log(who + " joined the server.");
+    var randomNumber=Math.floor(Math.random()*101)
+    bot.say(channel, "Recognized..." + who + "..." + randomNumber.toString();
 });
 
 bot.addListener("message", function(nick, to, text, message) {
