@@ -4,6 +4,7 @@
   "description": "An IRC bot.",
   "main": "bot.js",
   "dependencies": {
+    "dvorak": "0.0.4",
     "express": "^4.3.0",
     "irc": "^0.3.6",
     "leaderboard": "0.0.9",

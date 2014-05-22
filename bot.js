@@ -19,7 +19,9 @@ var config = {
     botName: "nodebot"
 };
 
-var irc = require("irc");
+var irc = require('irc');
+
+var keyboard = require('dvorak');
 
 var bot = new irc.Client(config.server, config.botName, {
     channels: config.channels
@@ -55,7 +57,12 @@ bot.addListener("message", function(nick, to, text, message) {
     if (new RegExp("fuck|shit|bitch|cunt|ass|hell", "gi").test(text)) {
         bot.say(to, nick + ": Do you kiss your mother with that mouth?");
     }
-
+    if (new RegExp("convert to dvorak:", "gi").test(text)) {
+        bot.say(to, nick + ": " + keyboard.toDvorak(text.split("dvorak: ")[1]));
+    } else if (new RegExp("convert to qwerty:", "gi").test(text)) {
+        bot.say(to, nick + ": " + keyboard.toQwerty(text.split("qwerty: ")[1]));
+    }
+    
 });
 
 bot.addListener("quit", function (nick, reason, channels, message) {
