@@ -1,5 +1,5 @@
 {
-  "name": "nodebot",
+  "name": "plusbot",
   "version": "0.0.0",
   "description": "An IRC bot.",
   "main": "bot.js",
@@ -9,6 +9,7 @@
     "irc": "^0.3.6",
     "leaderboard": "0.0.9",
     "logfmt": "^1.1.2",
+    "newrelic": "^1.6.0",
     "redis": "^0.10.2",
     "url": "^0.10.1"
   },

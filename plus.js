@@ -25,7 +25,8 @@ var bot = new irc.Client(config.server, config.botName, {
     channels: config.channels
 });
 
-var redis = require('redis');
+var nr = require('newrelic');
+    redis = require('redis');
     url = require('url');
     redisURL = url.parse(process.env.REDISCLOUD_URL);
     client = redis.createClient(redisURL.port, redisURL.hostname, {no_ready_check: true});
