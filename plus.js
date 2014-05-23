@@ -37,7 +37,7 @@ var users = [];
 
 bot.addListener("message", function(nick, to, text, message) {
     if (text.indexOf("plusbot") === 0) {
-       if (new RegExp("plus", "gi").test(text)) {
+       if (new RegExp("plus", "gi").test(text.split("plusbot")[1])) {
             var plusReceiver = "";
             for (var i = users.length - 1; i >= 0; --i) {
                 if (new RegExp(users[i], "gi").test(text)) {
