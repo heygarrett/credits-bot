@@ -14,8 +14,8 @@ app.listen(port, function() {
 });
 
 var config = {
-    channels: ["#chat"],
-    server: "mccs.stu.marist.edu",
+    channels: ["#learnprogramming"],
+    server: "irc.freenode.net",
     botName: "plusbot"
 };
 
