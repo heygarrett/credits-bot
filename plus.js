@@ -31,7 +31,7 @@ var redis = require('redis');
     client = redis.createClient(redisURL.port, redisURL.hostname, {no_ready_check: true});
     client.auth(redisURL.auth.split(":")[1]);
     Leaderboard = require('leaderboard');
-    plus_lb = new Leaderboard('pluses');
+    plus_lb = new Leaderboard('pluses', client);
 
 var users = [];
 
