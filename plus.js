@@ -66,7 +66,7 @@ bot.addListener("message", function(nick, to, text, message) {
                             if (score === 1 || score === -1) {
                                 grammar = "plus";
                             }
-                            bot.say(to, nick + ": No cheating! 1 point from Gryffindor! You now have " + score.toString() + " " + grammar + ".");
+                            bot.say(to, nick + ": No cheating! 1 point from Gryffindor! " + nick + " now has " + score.toString() + " " + grammar + ".");
                         });
                     } else {
                         plus_lb.score(plusReceiver, function(err, score) {
