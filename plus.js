@@ -98,3 +98,17 @@ bot.addListener("join", function(channel, who) {
 bot.addListener("names", function(channel, nicks) {
     users = Object.keys(nicks);
 });
+
+bot.addListener("nick", function(oldnick, newnick, channels, message) {
+    plus_lb.list(function(err, list) {
+        var newScore;
+        for (var i = list.length - 1; i >= 0; --i) {
+            if (list[i].member === oldnick) {
+                newScore = list[i].score
+                break;
+            }
+        }
+        plus_lb.add(newnick, newScore);
+        plus_lb.rm(oldnick);
+    });
+});
