@@ -36,7 +36,7 @@ var redis = require('redis');
 var users = [];
 
 bot.addListener("message", function(nick, to, text, message) {
-    if (text.indexOf("nodebot") === 0) {
+    if (text.indexOf("plusbot") === 0) {
        if (new RegExp("plus", "gi").test(text)) {
             var plusReceiver = "";
             for (var i = users.length - 1; i >= 0; --i) {
