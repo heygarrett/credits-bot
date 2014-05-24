@@ -14,8 +14,8 @@ app.listen(port, function() {
 });
 
 var config = {
-    channels: ["#learnprogramming"],
-    server: "irc.freenode.net",
+    channels: ["#chat"],
+    server: "mccs.stu.marist.edu",
     botName: "plusbot"
 };
 
@@ -37,14 +37,20 @@ var nr = require('newrelic');
 var users = [];
 
 bot.addListener("message", function(nick, to, text, message) {
-    if (text.indexOf("plusbot") === 0) {
-       if (new RegExp("plus", "gi").test(text.split("plusbot")[1])) {
+    var words = text.replace(new RegExp("[^a-zA-Z0-9-_ ]", "gi"), "").split(" ");
+    if (words[0] === "plusbot") {
+       if (words.indexOf("plus") !== -1) {
+            var plusReceiverList = [];
             var plusReceiver = "";
             for (var i = users.length - 1; i >= 0; --i) {
-                if (new RegExp(users[i], "gi").test(text)) {
-                    plusReceiver = users[i];
-                    break;
+                if (words.indexOf(users[i]) > 0) {
+                    plusReceiverList.push(users[i]);
                 }
+            }
+            if (plusReceiverList.length > 1) {
+                bot.say(to, nick + ": Please give out one plus at a time.");
+            } else if (plusReceiverList.length === 1) {
+                plusReceiver = plusReceiverList[0];
             }
 
             if (plusReceiver !== "") {
@@ -79,7 +85,7 @@ bot.addListener("message", function(nick, to, text, message) {
                     }
                 });
             }
-        } else if (new RegExp("leaderboard", "gi").test(text)) {
+        } else if (words.indexOf("leaderboard") !== -1) {
             plus_lb.list(function(err, list) {
             var leaders = list[0].member + ": " + list[0].score;
                 for (var i = 1; i < list.length; i++) {
@@ -104,7 +110,7 @@ bot.addListener("nick", function(oldnick, newnick, channels, message) {
         var newScore;
         for (var i = list.length - 1; i >= 0; --i) {
             if (list[i].member === oldnick) {
-                newScore = list[i].score
+                newScore = list[i].score;
                 break;
             }
         }
