@@ -16,7 +16,7 @@ app.listen(port, function() {
 var config = {
     channels: ["#learnprogramming"],
     server: "irc.freenode.net",
-    botName: "karmabot"
+    botName: "karma-bot"
 };
 
 var irc = require('irc');
