@@ -1,1 +1,1 @@
-web: node plus.js
+web: node karma.js

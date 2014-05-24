@@ -8,7 +8,7 @@ exports.config = {
   /**
    * Array of application names.
    */
-  app_name : ['plusbot'],
+  app_name : ['karmabot'],
   /**
    * Your New Relic license key.
    */
