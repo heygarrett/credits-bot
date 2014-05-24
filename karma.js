@@ -14,8 +14,8 @@ app.listen(port, function() {
 });
 
 var config = {
-    channels: ["#learnprogramming"],
-    server: "irc.freenode.net",
+    channels: ["#chat"],
+    server: "mccs.stu.marist.edu",
     botName: "karma-bot"
 };
 
@@ -109,7 +109,36 @@ function leaderboard(channel) {
 }
 
 bot.addListener("join", function(channel, who) {
-    bot.send("names", channel);
+    users.push(who);
+});
+
+bot.addListener("part", function (channel, nick, reason, message) {
+    var index = users.indexOf(nick);
+    if (index > -1) {
+        users.splice(index, 1);
+    }
+});
+
+bot.addListener("quit", function (nick, reason, channels, message) {
+    var index = users.indexOf(nick);
+    if (index > -1) {
+        users.splice(index, 1);
+    }
+});
+
+bot.addListener("kick", function (channel, nick, by, reason, message) {
+    var index = users.indexOf(nick);
+    if (index > -1) {
+        users.splice(index, 1);
+    }
+    bot.say(channel, nick + ": We thank you for your service.");
+});
+
+bot.addListener("kill", function (nick, reason, channels, message) {
+    var index = users.indexOf(nick);
+    if (index > -1) {
+        users.splice(index, 1);
+    }
 });
 
 bot.addListener("names", function(channel, nicks) {
