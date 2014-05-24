@@ -37,65 +37,68 @@ var nr = require('newrelic');
 var users = [];
 
 bot.addListener("message", function(nick, to, text, message) {
-    var words = text.replace(new RegExp("[^a-zA-Z0-9-_ ]", "gi"), "").split(" ");
-    if (words[0] === "plusbot") {
-       if (words.indexOf("plus") !== -1) {
-            var plusReceiverList = [];
-            var plusReceiver = "";
-            for (var i = users.length - 1; i >= 0; --i) {
-                if (words.indexOf(users[i]) > 0) {
-                    plusReceiverList.push(users[i]);
-                }
-            }
-            if (plusReceiverList.length > 1) {
-                bot.say(to, nick + ": Please give out one plus at a time.");
-            } else if (plusReceiverList.length === 1) {
-                plusReceiver = plusReceiverList[0];
-            }
+    var words = text.replace(new RegExp("[^a-zA-Z0-9-_+ ()]", "gi"), "").split(" ");
+        plusReceiver = "";
 
-            if (plusReceiver !== "") {
-                plus_lb.list(function(err, list) {
-                    var leaders = [];
-                    for (var i = list.length - 1; i >= 0; --i) {
-                        leaders.push(list[i].member);
-                    }
-
-                    if (leaders.indexOf(plusReceiver) === -1) {
-                        plus_lb.add(plusReceiver, 1);
-                    } else {
-                        plus_lb.incr(plusReceiver, 1);
-                    }
-
-                    var grammar = "pluses";
-                    if (plusReceiver === nick) {
-                        plus_lb.incr(plusReceiver, -2);
-                        plus_lb.score(plusReceiver, function(err, score) {
-                            if (score === 1 || score === -1) {
-                                grammar = "plus";
-                            }
-                            bot.say(to, nick + ": No cheating! 1 point from Gryffindor! " + nick + " now has " + score.toString() + " " + grammar + ".");
-                        });
-                    } else {
-                        plus_lb.score(plusReceiver, function(err, score) {
-                            if (score === 1 || score === -1) {
-                                grammar = "plus";
-                            }
-                            bot.say(to, plusReceiver + " got a plus! " + plusReceiver + " now has " + score.toString() + " " + grammar + ".");
-                        });
-                    }
-                });
-            }
-        } else if (words.indexOf("leaderboard") !== -1) {
-            plus_lb.list(function(err, list) {
-            var leaders = list[0].member + ": " + list[0].score;
-                for (var i = 1; i < list.length; i++) {
-                    leaders = leaders + ", " + list[i].member + ": " + list[i].score;
-                }
-            bot.say(to, leaders);
-            });
+    for (var i = users.length - 1; i >= 0; --i) {
+        if (words[0] === users[i] + "++") {
+            plusReceiver = users[i];
+            break;
+        } else if (words[0] === "karma(" + users[i] + ")") {
+            userKarma(users[i], to);
+            break;
+        } else if (words[0] === "karma()") {
+            leaderboard(to);
+            break;
         }
     }
+
+    if (plusReceiver !== "") {
+        plus_lb.list(function(err, list) {
+            var leaders = [];
+            for (var i = list.length - 1; i >= 0; --i) {
+                leaders.push(list[i].member);
+            }
+
+            if (leaders.indexOf(plusReceiver) === -1) {
+                plus_lb.add(plusReceiver, 1);
+            } else {
+                plus_lb.incr(plusReceiver, 1);
+            }
+
+            if (plusReceiver === nick) {
+                plus_lb.incr(plusReceiver, -2);
+                plus_lb.score(plusReceiver, function(err, score) {
+                    bot.say(to, nick + ": You get a downvote for cheating! " + nick + " now has " + score.toString() + " karma.");
+                });
+            } else {
+                plus_lb.score(plusReceiver, function(err, score) {
+                    bot.say(to, plusReceiver + " got an upvote! " + plusReceiver + " now has " + score.toString() + " karma.");
+                });
+            }
+        });
+    } 
 });
+
+function userKarma(nick, channel) {
+    plus_lb.score(nick, function(err, score) {
+        bot.say(channel, nick + " has " + score.toString() + " karma!");
+    });
+}
+
+function leaderboard(channel) {
+    plus_lb.list(function(err, list) {
+        if (list.length > 0) {
+            var leaders = list[0].member + ": " + list[0].score;
+            for (var i = 1; i < list.length; i++) {
+                leaders = leaders + ", " + list[i].member + ": " + list[i].score;
+            }
+            bot.say(channel, leaders);
+        } else {
+            bot.say(channel, "No upvotes given yet!");
+        }
+    });
+}
 
 bot.addListener("join", function(channel, who) {
     bot.send("names", channel);
