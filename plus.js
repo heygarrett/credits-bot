@@ -81,8 +81,16 @@ bot.addListener("message", function(nick, to, text, message) {
 });
 
 function userKarma(nick, channel) {
-    plus_lb.score(nick, function(err, score) {
-        bot.say(channel, nick + " has " + score.toString() + " karma!");
+    plus_lb.list(function(err, list) {
+        for (var i = list.length -1; i >= 0; --i) {
+            if (list[i].member === nick) {
+                bot.say(channel, nick + " has " + list[i].score.toString() + " karma!");
+                break;
+            } else {
+                bot.say(channel, nick + " has not received any karma!");
+                break;
+            }
+        }
     });
 }
 
