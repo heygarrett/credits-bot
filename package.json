@@ -1,5 +1,5 @@
 {
-  "name": "karmabot",
+  "name": "karma-bot",
   "version": "0.0.0",
   "description": "An IRC bot.",
   "main": "bot.js",
