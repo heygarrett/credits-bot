@@ -66,10 +66,15 @@ bot.addListener("message", function(nick, to, text, message) {
                 plus_lb.incr(plusReceiver, 1);
             }
 
-            if (plusReceiver === nick || nick === "kazbot") {
+            if (plusReceiver === nick) {
                 plus_lb.incr(plusReceiver, -2);
                 plus_lb.score(plusReceiver, function(err, score) {
                     bot.say(to, nick + ": You get a downvote for cheating! " + nick + " now has " + score.toString() + " karma.");
+                });
+            } else if (nick === "kazbot") {
+                plus_lb.incr(nick, -2);
+                plus_lb.score(nick, function(err, score) {
+                    bot.say(to, nick + ": Really? You get a downvote. kazlock now has " + score.toString() + " karma.");
                 });
             } else {
                 plus_lb.score(plusReceiver, function(err, score) {
