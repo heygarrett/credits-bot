@@ -156,5 +156,11 @@ bot.addListener("nick", function(oldnick, newnick, channels, message) {
         }
         plus_lb.add(newnick, newScore);
         plus_lb.rm(oldnick);
+        
+        users.push(newnick);
+        var index = users.indexOf(oldnick);
+        if (index > -1) {
+            users.splice(index, 1);
+        }
     });
 });
