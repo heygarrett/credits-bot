@@ -98,7 +98,7 @@ function leaderboard(channel) {
     plus_lb.list(function(err, list) {
         if (list.length > 0) {
             var leaders = "Top 10 => " + list[0].member + ": " + list[0].score;
-            for (var i = 1; i < 9; i++) {
+            for (var i = 1; i < Math.min(list.length, 9); i++) {
                 leaders = leaders + ", " + list[i].member + ": " + list[i].score;
             }
             bot.say(channel, leaders);
