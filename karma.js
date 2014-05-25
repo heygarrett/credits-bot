@@ -66,7 +66,7 @@ bot.addListener("message", function(nick, to, text, message) {
             if (plusReceiver === nick) {
                 plus_lb.incr(plusReceiver, -2);
                 plus_lb.score(plusReceiver, function(err, score) {
-                    bot.say(to, nick + ": You get a downvote for cheating! " + nick + " now has " + score.toString() + " karma.");
+                    bot.say(to, nick + " got a downvote for cheating! " + nick + " now has " + score.toString() + " karma.");
                 });
             } else if (nick === "kazbot") {
                 plus_lb.incr(nick, -2);
