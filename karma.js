@@ -47,10 +47,7 @@ bot.addListener("message", function(nick, to, text, message) {
         } else if (words[0] === "karma(" + users[i] + ")") {
             userKarma(users[i], to);
             break;
-        } else if (words[0] === "karma()") {
-            leaderboard(to);
-            break;
-        }
+        } 
     }
 
     if (plusReceiver !== "") {
@@ -82,7 +79,13 @@ bot.addListener("message", function(nick, to, text, message) {
                 });
             }
         });
-    } 
+    } else if (words[0] === "karma()") {
+        leaderboard(to);
+    } else if (words[0] === "remove()") {
+        plus_lb.rm(nick);
+        bot.say(to, nick + ": You have been removed from the leaderboard and your karma has been reset.");
+    }
+
 });
 
 function userKarma(nick, channel) {
