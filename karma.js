@@ -131,7 +131,7 @@ bot.addListener("kick", function (channel, nick, by, reason, message) {
     if (index > -1) {
         users.splice(index, 1);
     }
-    bot.say(channel, nick + ": We thank you for your service.");
+    bot.say(channel, by + ": We thank you for your service.");
 });
 
 bot.addListener("kill", function (nick, reason, channels, message) {
