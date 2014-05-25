@@ -22,7 +22,8 @@ var config = {
 var irc = require('irc');
 
 var bot = new irc.Client(config.server, config.botName, {
-    channels: config.channels
+    channels: config.channels,
+    userName: config.botName
 });
 
 var nr = require('newrelic');
@@ -86,7 +87,7 @@ bot.addListener("message", function(nick, to, text, message) {
         plus_lb.rm(nick);
         bot.say(to, nick + ": You have been removed from the leaderboard and your karma has been reset.");
     } else if (new RegExp("(thanks|thx|thank you)", "gi").test(text)) {
-        bot.say(to, nick + ": If someone helped you out, give them an upvote by saying \'their-nick++\'.");
+        bot.say(to, nick + ": If someone helped you out, give them an upvote by saying \'their-nick++\'");
     }
 
 });
