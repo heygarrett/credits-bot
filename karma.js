@@ -159,12 +159,12 @@ bot.addListener("nick", function(oldnick, newnick, channels, message) {
         for (var i = list.length - 1; i >= 0; --i) {
             if (list[i].member === oldnick) {
                 newScore = list[i].score;
+                plus_lb.add(newnick, newScore);
+                plus_lb.rm(oldnick);
                 break;
             }
         }
-        plus_lb.add(newnick, newScore);
-        plus_lb.rm(oldnick);
-        
+
         users.push(newnick);
         var index = users.indexOf(oldnick);
         if (index > -1) {
