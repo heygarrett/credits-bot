@@ -14,7 +14,7 @@ app.listen(port, function() {
 });
 
 var config = {
-    channels: ["#learnprogramming"],
+    channels: ["#learnprogramming,#lpmc"],
     server: "irc.freenode.net",
     botName: "karma-bot"
 };
