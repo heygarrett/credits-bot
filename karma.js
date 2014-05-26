@@ -169,7 +169,9 @@ bot.addListener("nick", function(oldnick, newnick, channels, message) {
     plus_lb.list(function(err, list) {
         var newScore;
         for (var i = list.length - 1; i >= 0; --i) {
-            if (list[i].member === oldnick) {
+            if (list[i].member === newnick) {
+                break;
+            } else if (list[i].member === oldnick && i === 0) {
                 newScore = list[i].score;
                 plus_lb.add(newnick, newScore);
                 plus_lb.rm(oldnick);
