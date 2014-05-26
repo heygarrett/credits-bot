@@ -88,12 +88,8 @@ bot.addListener("message", function(nick, to, text, message) {
         bot.say(to, nick + ": You have been removed from the leaderboard and your karma has been reset.");
     } else if (new RegExp("(thanks|thx|thank you)", "gi").test(text)) {
         plus_lb.list(function(err, list) {
-            for (var i = list.length -1; i >= 0; --i) {
-                if (nick === list[i].member || nick === "karma-bot") {
-                    break;
-                } else if (i === 0) {
-                    bot.say(to, nick + ": If someone helped you out, give them an upvote by saying \'their-nick++\'");
-                }
+            if (!hasKarma(nick) && nick !== "karma-bot") {
+                bot.say(to, nick + ": If someone helped you out, give them an upvote by saying \'their-nick++\'");
             }
         });
     }
@@ -102,14 +98,10 @@ bot.addListener("message", function(nick, to, text, message) {
 
 function userKarma(nick, channel) {
     plus_lb.list(function(err, list) {
-        for (var i = list.length -1; i >= 0; --i) {
-            if (list[i].member === nick) {
-                bot.say(channel, nick + " has " + list[i].score.toString() + " karma!");
-                break;
-            } else {
-                bot.say(channel, nick + " has not received any karma!");
-                break;
-            }
+        if (hasKarma(nick)) {
+            bot.say(channel, nick + " has " + list[i].score.toString() + " karma!");
+        } else {
+            bot.say(channel, nick + " has not received any karma!");
         }
     });
 }
@@ -125,6 +117,17 @@ function leaderboard(channel) {
         } else {
             bot.say(channel, "No upvotes given yet!");
         }
+    });
+}
+
+function hasKarma(nick) {
+    plus_lb.list(function(err, list) {
+        for (var i = list.length - 1; i >= 0; --i) {
+            if (nick === list[i].member) {
+                return true;
+            }
+        }
+        return false;
     });
 }
 
@@ -167,15 +170,10 @@ bot.addListener("names", function(channel, nicks) {
 
 bot.addListener("nick", function(oldnick, newnick, channels, message) {
     plus_lb.list(function(err, list) {
-        var newScore;
-        for (var i = list.length - 1; i >= 0; --i) {
-            if (list[i].member === newnick) {
-                break;
-            } else if (list[i].member === oldnick && i === 0) {
-                newScore = list[i].score;
+        if (hasKarma(oldnick) && !hasKarma(newnick)) {
+            plus_lb.score(oldnick, function(err, score) {
+                var newScore = score;
                 plus_lb.add(newnick, newScore);
-                plus_lb.rm(oldnick);
-                break;
             }
         }
 
