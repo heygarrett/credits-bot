@@ -38,13 +38,13 @@ var nr = require('newrelic');
 var users = [];
 
 bot.addListener("message", function(nick, to, text, message) {
-    var words = text.replace(/[^a-zA-Z0-9-_+ ()]/, "").split(/[+ ]/);
+    var words = text.replace(/[^a-zA-Z0-9-_+ ()]/, "").split(/[ ]/);
     var numCredits;
-    if (words[1]) {
-        numCredits = parseInt(words[1].replace(/[^\d]/, ""));
+    if (/\+\d+\b/.test(words[0])) {
+        numCredits = parseInt(words[0].split("+")[1]);
     }
     for (var i = users.length - 1; i >= 0; --i) {
-        if (words[0] === users[i] && numCredits !== 'undefined') {
+        if (words[0].indexOf(users[i]) === 0 && numCredits !== 'undefined') {
             var plusReceiver = users[i];
             plus_lb.score(nick, function(err, score) {
                 if (score > 0) {
@@ -61,7 +61,7 @@ bot.addListener("message", function(nick, to, text, message) {
                     });
                     plus_lb.incr(nick, -numCredits);
                     plus_lb.score(plusReceiver, function(err, score) {
-                        bot.say(to, nick + " gave " + plusReceiver + " a " + numCredits + " credits. Send a notice to credits-bot with the word \"credits\" to check your credits.");
+                        bot.say(to, nick + " gave " + plusReceiver + " " + numCredits + " credits. Send a notice to credits-bot with the word \"credits\" to check your credits.");
                     });
                 } else {
                     bot.say(to, "Sorry " + nick + ", but you don't have any credits to give.");
