@@ -64,7 +64,7 @@ bot.addListener("message", function(nick, to, text, message) {
                         bot.say(to, nick + " gave " + plusReceiver + " " + numCredits + " credits. Send a notice to credits-bot with the word \"credits\" to check your credits.");
                     });
                 } else {
-                    bot.say(to, "Sorry " + nick + ", but you don't have any credits to give.");
+                    bot.say(to, "Sorry " + nick + ", but you don't have enough credits.");
                 }
             });
             break;
