@@ -47,7 +47,7 @@ bot.addListener("message", function(nick, to, text, message) {
         if (words[0].indexOf(users[i]) === 0 && typeof numCredits !== 'undefined') {
             var plusReceiver = users[i];
             plus_lb.score(nick, function(err, score) {
-                if (score > 0) {
+                if (score - numCredits >= 0) {
                     plus_lb.list(function(err, list) {
                         for (var i = list.length - 1; i >= 0; --i) {
                             if (nick === list[i].member) {
