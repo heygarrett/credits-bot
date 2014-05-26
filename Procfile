@@ -1,1 +1,1 @@
-web: node karma.js
+web: node bot.js
