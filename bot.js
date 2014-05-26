@@ -14,7 +14,7 @@ app.listen(port, function() {
 });
 
 var config = {
-    channels: ["#learnprogramming,#lpmc"],
+    channels: ["#learnprogramming"],
     server: "irc.freenode.net",
     botName: "credits-bot"
 };
@@ -132,8 +132,8 @@ bot.addListener("names", function(channel, nicks) {
                 if (list[j].member === users[i]) {
                     break;
                 } else if (j === 0) {
-                    plus_lb.add(users[i], 5);
-                    console.log(users[i]);
+                    plus_lb.add(users[i], 15);
+                    console.log(users[i] + " was given 15 credits.");
                 }
             }
         }
@@ -142,23 +142,14 @@ bot.addListener("names", function(channel, nicks) {
 
 bot.addListener("nick", function(oldnick, newnick, channels, message) {
     plus_lb.list(function(err, list) {
-        var isMerchant = false;
-        for (var i = list.length -1; i >= 0; --i) {
+        for (var i = list.length - 1; i >= 0; --i) {
             if (list[i].member === newnick) {
-                isMerchant = false;
                 break;
+            } else if (i === 0) {
+                plus_lb.add(newnick, 15);
             }
-            if (list[i].member === oldnick) {
-                isMerchant = true;
-            }
-        }
-        if (isMerchant === true) {
-            plus_lb.score(oldnick, function(err, score) {
-                plus_lb.add(newnick, score);
-            });
         }
     });
-
     users.push(newnick);
     var index = users.indexOf(oldnick);
     if (index > -1) {
