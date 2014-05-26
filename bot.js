@@ -42,35 +42,36 @@ bot.addListener("message", function(nick, to, text, message) {
     var numCredits;
     if (/\+\d+\b/.test(words[0])) {
         numCredits = parseInt(words[0].split("+")[1]);
-    }
-    for (var i = users.length - 1; i >= 0; --i) {
-        if (words[0].indexOf(users[i]) === 0 && typeof numCredits !== 'undefined') {
-            var plusReceiver = users[i];
-            plus_lb.score(nick, function(err, score) {
-                if (score - numCredits >= 0) {
-                    plus_lb.list(function(err, list) {
-                        for (var i = list.length - 1; i >= 0; --i) {
-                            if (nick === list[i].member) {
-                                plus_lb.incr(plusReceiver, numCredits);
-                                break;
-                            } else {
-                                plus_lb.add(plusReceiver, numCredits + 15);
-                                break;
+        for (var i = users.length - 1; i >= 0; --i) {
+            if (words[0].indexOf(users[i]) === 0 && typeof numCredits !== 'undefined') {
+                var plusReceiver = users[i];
+                plus_lb.score(nick, function(err, score) {
+                    if (score - numCredits >= 0) {
+                        plus_lb.list(function(err, list) {
+                            for (var i = list.length - 1; i >= 0; --i) {
+                                if (nick === list[i].member) {
+                                    plus_lb.incr(plusReceiver, numCredits);
+                                    break;
+                                } else {
+                                    plus_lb.add(plusReceiver, numCredits + 15);
+                                    break;
+                                }
                             }
-                        }
-                    });
-                    plus_lb.incr(nick, -numCredits);
-                    plus_lb.score(plusReceiver, function(err, score) {
-                        bot.say(to, nick + " gave " + plusReceiver + " " + numCredits + " credits. \"/notice credits-bot credits\" to see your credits.");
-                    });
-                } else {
-                    bot.say(to, "Sorry " + nick + ", but you don't have enough credits.");
-                }
-            });
-            break;
-        }   
+                        });
+                        plus_lb.incr(nick, -numCredits);
+                        plus_lb.score(plusReceiver, function(err, score) {
+                            bot.say(to, nick + " gave " + plusReceiver + " " + numCredits + " credits. \"/notice credits-bot credits\" to see your credits.");
+                        });
+                    } else {
+                        bot.say(to, "Sorry " + nick + ", but you don't have enough credits.");
+                    }
+                });
+                break;
+            }   
+        }
+    } else if (words[0].indexOf("credits-bot") === 0 && words[1].indexOf("help") >= 0) {
+        bot.say(to, "\"<nick>+X\" will give X credits to <nick>. \"/notice credits-bot credits\" will show you how many credits you have.");
     }
-
 });
 
 function leaderboard(channel) {
