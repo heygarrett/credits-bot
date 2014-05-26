@@ -87,7 +87,15 @@ bot.addListener("message", function(nick, to, text, message) {
         plus_lb.rm(nick);
         bot.say(to, nick + ": You have been removed from the leaderboard and your karma has been reset.");
     } else if (new RegExp("(thanks|thx|thank you)", "gi").test(text)) {
-        bot.say(to, nick + ": If someone helped you out, give them an upvote by saying \'their-nick++\'");
+        plus_lb.list(function(err, list) {
+            for (var i = list.length -1; i >= 0; --i) {
+                if (nick === list[i].member || nick === "karma-bot") {
+                    break;
+                } else if (i === 0) {
+                    bot.say(to, nick + ": If someone helped you out, give them an upvote by saying \'their-nick++\'");
+                }
+            }
+        });
     }
 
 });
