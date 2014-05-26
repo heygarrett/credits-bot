@@ -26,13 +26,13 @@ var bot = new irc.Client(config.server, config.botName, {
     userName: config.botName
 });
 
-var nr = require('newrelic');
-    redis = require('redis');
-    url = require('url');
-    redisURL = url.parse(process.env.REDISCLOUD_URL);
-    client = redis.createClient(redisURL.port, redisURL.hostname, {no_ready_check: true});
-    client.auth(redisURL.auth.split(":")[1]);
-    Leaderboard = require('leaderboard');
+var nr = require('newrelic'),
+    redis = require('redis'),
+    url = require('url'),
+    redisURL = url.parse(process.env.REDISCLOUD_URL),
+    client = redis.createClient(redisURL.port, redisURL.hostname, {no_ready_check: true}),
+    client.auth(redisURL.auth.split(":")[1]),
+    Leaderboard = require('leaderboard'),
     plus_lb = new Leaderboard('pluses', {}, client);
 
 var users = [];
@@ -48,11 +48,11 @@ bot.addListener("message", function(nick, to, text, message) {
                 plus_lb.score(nick, function(err, score) {
                     if (score - numCredits >= 0) {
                         plus_lb.list(function(err, list) {
-                            for (var i = list.length - 1; i >= 0; --i) {
-                                if (nick === list[i].member) {
+                            for (var j = list.length - 1; j >= 0; --j) {
+                                if (plusReceiver === list[j].member) {
                                     plus_lb.incr(plusReceiver, numCredits);
                                     break;
-                                } else {
+                                } else if (i === 0) {
                                     plus_lb.add(plusReceiver, numCredits + 15);
                                     break;
                                 }
