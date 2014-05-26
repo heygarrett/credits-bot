@@ -44,7 +44,7 @@ bot.addListener("message", function(nick, to, text, message) {
         numCredits = parseInt(words[1].replace(/[^\d]/, ""));
     }
     for (var i = users.length - 1; i >= 0; --i) {
-        if (words[0] === users[i] && numCredits === 'undefined') {
+        if (words[0] === users[i] && numCredits !== 'undefined') {
             var plusReceiver = users[i];
             plus_lb.score(nick, function(err, score) {
                 if (score > 0) {
@@ -61,7 +61,7 @@ bot.addListener("message", function(nick, to, text, message) {
                     });
                     plus_lb.incr(nick, -numCredits);
                     plus_lb.score(plusReceiver, function(err, score) {
-                        bot.say(to, nick + " gave " + plusReceiver + " a " + numCredits + " credits. Send a notice to credits-bot to check your credits.");
+                        bot.say(to, nick + " gave " + plusReceiver + " a " + numCredits + " credits. Send a notice to credits-bot with the word \"credits\" to check your credits.");
                     });
                 } else {
                     bot.say(to, "Sorry " + nick + ", but you don't have any credits to give.");
