@@ -38,8 +38,8 @@ var plus_lb = new Leaderboard('pluses', {}, client);
 var users = [];
 
 bot.addListener("message", function(nick, to, text, message) {
-    var words = text.replace(/[^\w\d-+]/, "").split(" ");
-    var re = /^[\w\d-]*\+(\d+)$/gm;
+    var words = text.replace(/[^\w\d-+=]/, "").split(" ");
+    var re = /^[\w\d-]*\+=(\d+)$/gm;
     var numCredits;
     if (re.test(words[0])) {
         numCredits = parseInt(words[0].match(re)[0].replace(/[^\d]*/, ""));
