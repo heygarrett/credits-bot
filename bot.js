@@ -38,11 +38,11 @@ var plus_lb = new Leaderboard('pluses', {}, client);
 var users = [];
 
 bot.addListener("message", function(nick, to, text, message) {
-    var words = text.replace(/[^\w\d-+]/, "").split(" ");
-    var re = /^[\w\d-]*\+(\d+)$/gm;
+    var words = text.replace(/[^\w\d-+=]/, "").split(" ");
+    var re = /^[\w\d-]*\+=(\d+)$/gm;
     var numCredits;
     if (re.test(words[0])) {
-        numCredits = parseInt(words[0].match(/^[\w\d-]*\+(\d+)$/gm)[0].replace(/[^\d]*/, ""));
+        numCredits = parseInt(words[0].match(re)[0].replace(/[^\d]*/, ""));
     }
     var plusReceiver;
     if (typeof numCredits === 'number') {
@@ -124,14 +124,10 @@ bot.addListener("names", function(channel, nicks) {
 });
 
 bot.addListener("nick", function(oldnick, newnick, channels, message) {
-    plus_lb.list(function(err, list) {
-        for (var i = list.length - 1; i >= 0; --i) {
-            if (list[i].member === newnick) {
-                break;
-            } else if (i === 0) {
-                plus_lb.add(newnick, 15);
-            }
-        }
+    plus_lb.score(newnick, function(err, score) {
+        if (score === -1) {
+            plus_lb.add(newnick, 15);
+        } 
     });
     users.push(newnick);
     var index = users.indexOf(oldnick);
