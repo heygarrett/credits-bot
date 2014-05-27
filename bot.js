@@ -42,7 +42,7 @@ bot.addListener("message", function(nick, to, text, message) {
     var re = /^[\w\d-]*\+=(\d+)$/gm;
     var numCredits;
     if (re.test(words[0])) {
-        numCredits = parseInt(words[0].match(re)[0].replace(/[^\d]*/, ""));
+        numCredits = parseInt(words[0].match(re)[0].split("+=")[1].replace(/[^\d]*/, ""));
     }
     var plusReceiver;
     if (typeof numCredits === 'number') {
