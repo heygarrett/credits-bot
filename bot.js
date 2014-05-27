@@ -14,8 +14,8 @@ app.listen(port, function() {
 });
 
 var config = {
-    channels: ["#learnprogramming,#lpmc"],
-    server: "irc.freenode.net",
+    channels: ["#chat"],
+    server: "mccs.stu.marist.edu",
     botName: "credits-bot"
 };
 
@@ -54,20 +54,18 @@ bot.addListener("message", function(nick, to, text, message) {
         }
     }
     if (typeof plusReceiver !== 'undefined') {
-        console.log(numCredits);
         plus_lb.score(nick, function(err, score) {
-            console.log(numCredits);
             if (score - numCredits >= 0) {
                 plus_lb.incr(plusReceiver, numCredits);
                 plus_lb.incr(nick, -numCredits);
                 bot.say(to, "Credits transferred from " + nick + " to " + plusReceiver + ": " + numCredits);
             } else {
-                bot.say(to, nick + " sorry, but you don't have enough credits.");
+                bot.say(to, "Sorry " + nick + ", but you don't have enough credits.");
             }
         });
     }
     if (words[0].indexOf(config.botName) === 0 && words[1].indexOf("help") >= 0) {
-         bot.say(to, "\"<nick>+X\" will give X credits to <nick>. \"/notice credits-bot credits\" will show you how many credits you have.");
+         bot.say(to, "\"<nick>+=X\" will give X credits to <nick>. \"/notice credits-bot credits\" will show you how many credits you have.");
     }
 });
 
@@ -107,16 +105,13 @@ bot.addListener("kill", function (nick, reason, channels, message) {
 
 bot.addListener("names", function(channel, nicks) {
     users = Object.keys(nicks);
-    console.log(users);
     plus_lb.list(function(err, list) {
-        console.log(list);
         for (var i = users.length - 1; i >= 0; --i) {
             for (var j = list.length -1; j >= 0; --j) {
                 if (list[j].member === users[i]) {
                     break;
                 } else if (j === 0) {
                     plus_lb.add(users[i], 15);
-                    console.log(users[i] + " was given 15 credits.");
                 }
             }
         }
