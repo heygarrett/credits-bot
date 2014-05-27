@@ -14,8 +14,8 @@ app.listen(port, function() {
 });
 
 var config = {
-    channels: ["#learnprogramming"],
-    server: "irc.freenode.net",
+    channels: ["#chat"],
+    server: "mccs.stu.marist.edu",
     botName: "credits-bot"
 };
 
@@ -26,67 +26,50 @@ var bot = new irc.Client(config.server, config.botName, {
     userName: config.botName
 });
 
-var nr = require('newrelic'),
-var redis = require('redis'),
-var url = require('url'),
-var redisURL = url.parse(process.env.REDISCLOUD_URL),
+var nr = require('newrelic');
+var redis = require('redis');
+var url = require('url');
+var redisURL = url.parse(process.env.REDISCLOUD_URL);
 var client = redis.createClient(redisURL.port, redisURL.hostname, {no_ready_check: true});
 client.auth(redisURL.auth.split(":")[1]);
-var Leaderboard = require('leaderboard'),
-var plus_lb = new Leaderboard('pluses', {}, client),
+var Leaderboard = require('leaderboard');
+var plus_lb = new Leaderboard('pluses', {}, client);
 
 var users = [];
 
 bot.addListener("message", function(nick, to, text, message) {
-    var words = text.replace(/[^a-zA-Z0-9-_+ ()]/, "").split(/[ ]/);
+    var words = text.replace(/[^\w\d-+]/, "").split(" ");
+    var re = /^[\w\d-]*\+(\d+)$/gm;
     var numCredits;
-    if (/\+\d+\b/.test(words[0])) {
-        numCredits = parseInt(words[0].split("+")[1]);
+    if (re.test(words[0])) {
+        numCredits = parseInt(words[0].match(/^[\w\d-]*\+(\d+)$/gm)[0].replace(/[^\d]*/, ""));
+    }
+    var plusReceiver;
+    if (typeof numCredits === 'number') {
         for (var i = users.length - 1; i >= 0; --i) {
-            if (words[0].indexOf(users[i]) === 0 && typeof numCredits !== 'undefined') {
-                var plusReceiver = users[i];
-                plus_lb.score(nick, function(err, score) {
-                    if (score - numCredits >= 0) {
-                        plus_lb.list(function(err, list) {
-                            for (var j = list.length - 1; j >= 0; --j) {
-                                if (plusReceiver === list[j].member) {
-                                    plus_lb.incr(plusReceiver, numCredits);
-                                    break;
-                                } else if (i === 0) {
-                                    plus_lb.add(plusReceiver, numCredits + 15);
-                                    break;
-                                }
-                            }
-                        });
-                        plus_lb.incr(nick, -numCredits);
-                        plus_lb.score(plusReceiver, function(err, score) {
-                            bot.say(to, nick + " gave " + plusReceiver + " " + numCredits + " credits. \"/notice credits-bot credits\" to see your credits.");
-                        });
-                    } else {
-                        bot.say(to, "Sorry " + nick + ", but you don't have enough credits.");
-                    }
-                });
+            if (words[0].indexOf(users[i]) === 0) {
+                plusReceiver = users[i];
                 break;
-            }   
+            }
         }
-    } else if (words[0].indexOf("credits-bot") === 0 && words[1].indexOf("help") >= 0) {
-        bot.say(to, "\"<nick>+X\" will give X credits to <nick>. \"/notice credits-bot credits\" will show you how many credits you have.");
+    }
+    if (typeof plusReceiver !== 'undefined') {
+        console.log(numCredits);
+        plus_lb.score(nick, function(err, score) {
+            console.log(numCredits);
+            if (score - numCredits >= 0) {
+                plus_lb.incr(plusReceiver, numCredits);
+                plus_lb.incr(nick, -numCredits);
+                bot.say(to, "Credits transferred from " + nick + " to " + plusReceiver + ": " + numCredits);
+            } else {
+                bot.say(to, nick + " sorry, but you don't have enough credits.");
+            }
+        });
+    }
+    if (words[0].indexOf(config.botName) === 0 && words[1].indexOf("help") >= 0) {
+         bot.say(to, "\"<nick>+X\" will give X credits to <nick>. \"/notice credits-bot credits\" will show you how many credits you have.");
     }
 });
-
-function leaderboard(channel) {
-    plus_lb.list(function(err, list) {
-        if (list.length > 0) {
-            var leaders = "Top 10 => " + list[0].member + ": " + list[0].score;
-            for (var i = 1; i < Math.min(list.length, 9); i++) {
-                leaders = leaders + ", " + list[i].member + ": " + list[i].score;
-            }
-            bot.say(channel, leaders);
-        } else {
-            bot.say(channel, "No credits given yet!");
-        }
-    });
-}
 
 bot.addListener("join", function(channel, who) {
     users.push(who);
