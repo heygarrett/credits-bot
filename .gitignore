@@ -1,3 +1,4 @@
 node_modules/
 .env
+.gitattributes
 newrelic_agent.log
