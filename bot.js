@@ -46,7 +46,7 @@ bot.addListener("message", function(nick, to, text, message) {
     if (!isNaN(numCredits) && numCredits > 0) {
         console.log("credits[0]: " + credits[0]);
         for (var i = users.length - 1; i >= 0; --i) {
-            if (credits[0] === users[i]) {
+            if (credits[0] === users[i] && credits[0] !== nick) {
                 plusReceiver = users[i];
                 console.log("plusReceiver: " + plusReceiver);
                 break;
@@ -65,8 +65,10 @@ bot.addListener("message", function(nick, to, text, message) {
             }
         });
     }
-    if (words[0].indexOf(config.botName) === 0 && words[1].indexOf("help") >= 0) {
-         bot.say(to, "\"<nick>+=X\" will give X credits to <nick>. \"/notice credits-bot credits\" will show you how many credits you have.");
+    if (words[0] === config.botName && typeof words[1] !== 'undefined') {
+        if (words[1].indexOf("help") >= 0) {
+             bot.say(to, "\"<nick>+=X\" will give X credits to <nick>. \"/notice credits-bot credits\" will show you how many credits you have.");
+        }
     }
 });
 
