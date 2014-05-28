@@ -44,9 +44,11 @@ bot.addListener("message", function(nick, to, text, message) {
     var plusReceiver;
 
     if (!isNaN(numCredits)) {
+        console.log("credits[0]: " + credits[0]);
         for (var i = users.length - 1; i >= 0; --i) {
             if (credits[0] === users[i]) {
                 plusReceiver = users[i];
+                console.log("plusReceiver: " + plusReceiver);
                 break;
             }
         }
@@ -70,7 +72,11 @@ bot.addListener("message", function(nick, to, text, message) {
 
 bot.addListener("join", function(channel, who) {
     users.push(who);
-    plus_lb.add(who, 15);
+    plus_lb.score(who, function(err, score) {
+        if (score === -1) {
+            plus_lb.add(who, 15);
+        }
+    });
 });
 
 bot.addListener("part", function (channel, nick, reason, message) {
