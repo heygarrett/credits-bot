@@ -14,8 +14,8 @@ app.listen(port, function() {
 });
 
 var config = {
-    channels: ["#learnprogramming,#lpmc"],
-    server: "irc.freenode.net",
+    channels: ["#chat"],
+    server: "mccs.stu.marist.edu",
     botName: "credits-bot"
 };
 
@@ -43,7 +43,7 @@ bot.addListener("message", function(nick, to, text, message) {
     var numCredits = parseInt(credits[1]);
     var plusReceiver;
 
-    if (!isNaN(numCredits)) {
+    if (!isNaN(numCredits) && numCredits > 0) {
         console.log("credits[0]: " + credits[0]);
         for (var i = users.length - 1; i >= 0; --i) {
             if (credits[0] === users[i]) {
