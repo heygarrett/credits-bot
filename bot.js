@@ -39,20 +39,19 @@ var users = [];
 
 bot.addListener("message", function(nick, to, text, message) {
     var words = text.replace(/[^\w\d-+=]/, "").split(" ");
-    var re = /^[\w\d-]*\+=(\d+)$/gm;
-    var numCredits;
-    if (re.test(words[0])) {
-        numCredits = parseInt(words[0].match(re)[0].split("+=")[1].replace(/[^\d]*/, ""));
-    }
+    var credits = words[0].split("+=");
+    var numCredits = parseInt(credits[1]);
     var plusReceiver;
-    if (typeof numCredits === 'number') {
+
+    if (!isNaN(numCredits)) {
         for (var i = users.length - 1; i >= 0; --i) {
-            if (words[0].indexOf(users[i]) === 0) {
+            if (credits[0] === users[i]) {
                 plusReceiver = users[i];
                 break;
             }
         }
     }
+
     if (typeof plusReceiver !== 'undefined') {
         plus_lb.score(nick, function(err, score) {
             if (score - numCredits >= 0) {
