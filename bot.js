@@ -144,11 +144,7 @@ bot.addListener("nick", function(oldnick, newnick, channels, message) {
     }
 });
 
-<<<<<<< HEAD
-bot.addListener("message", function(nick, to, text, message) {
-=======
 bot.addListener("pm", function(nick, text, message) {
->>>>>>> heroku
     if (/credits/.test(text)) {
         plus_lb.score(nick, function(err, score) {
             bot.say(nick, score.toString());
