@@ -57,7 +57,13 @@ bot.addListener("message", function(nick, to, text, message) {
     if (typeof plusReceiver !== 'undefined') {
         plus_lb.score(nick, function(err, score) {
             if (score - numCredits >= 0) {
-                plus_lb.incr(plusReceiver, numCredits);
+                plus_lb.score(plusReceiver, function(err, p_score) {
+                    if (p_score < 0) {
+                        plus_lb.add(plusReceiver, 15 + numCredits);
+                    } else {
+                        plus_lb.incr(plusReceiver, numCredits);
+                    }
+                });
                 plus_lb.incr(nick, -numCredits);
                 bot.say(to, "Credits transferred from " + nick + " to " + plusReceiver + ": " + numCredits);
             } else {
@@ -67,7 +73,7 @@ bot.addListener("message", function(nick, to, text, message) {
     }
     if (words[0] === config.botName && typeof words[1] !== 'undefined') {
         if (words[1].indexOf("help") >= 0) {
-             bot.say(to, "\"<nick>+=X\" will give X credits to <nick>. \"/msg credits-bot credits\" will show you how many credits you have.");
+             bot.say(to, "\"<nick>+=X\" will transfer X credits to <nick>. \"/msg credits-bot credits\" will show you how many credits you have.");
         }
     }
 });
@@ -138,7 +144,11 @@ bot.addListener("nick", function(oldnick, newnick, channels, message) {
     }
 });
 
+<<<<<<< HEAD
 bot.addListener("message", function(nick, to, text, message) {
+=======
+bot.addListener("pm", function(nick, text, message) {
+>>>>>>> heroku
     if (/credits/.test(text)) {
         plus_lb.score(nick, function(err, score) {
             bot.say(nick, score.toString());
