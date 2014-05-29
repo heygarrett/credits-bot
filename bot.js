@@ -67,7 +67,7 @@ bot.addListener("message", function(nick, to, text, message) {
     }
     if (words[0] === config.botName && typeof words[1] !== 'undefined') {
         if (words[1].indexOf("help") >= 0) {
-             bot.say(to, "\"<nick>+=X\" will give X credits to <nick>. \"/notice credits-bot credits\" will show you how many credits you have.");
+             bot.say(to, "\"<nick>+=X\" will give X credits to <nick>. \"/msg credits-bot credits\" will show you how many credits you have.");
         }
     }
 });
@@ -138,10 +138,10 @@ bot.addListener("nick", function(oldnick, newnick, channels, message) {
     }
 });
 
-bot.addListener("notice", function(nick, to, text, message) {
+bot.addListener("message", function(nick, to, text, message) {
     if (/credits/.test(text)) {
         plus_lb.score(nick, function(err, score) {
-            bot.notice(nick, score.toString());
+            bot.say(nick, score.toString());
         });
     }
 });
