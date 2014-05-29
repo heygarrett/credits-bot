@@ -139,7 +139,7 @@ bot.addListener("nick", function(oldnick, newnick, channels, message) {
 });
 
 bot.addListener("message", function(nick, to, text, message) {
-    if (/credits/.test(text)) {
+    if (to === bot.botName && /credits/.test(text)) {
         plus_lb.score(nick, function(err, score) {
             bot.say(nick, score.toString());
         });
