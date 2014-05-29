@@ -14,7 +14,7 @@ app.listen(port, function() {
 });
 
 var config = {
-    channels: ["#learnprogramming,#lpmc"],
+    channels: ["#learnprogramming"],
     server: "irc.freenode.net",
     botName: "credits-bot"
 };
@@ -121,6 +121,7 @@ bot.addListener("names", function(channel, nicks) {
     users = Object.keys(nicks);
     console.log(nicks);
     console.log(Object.keys(nicks));
+    console.log(users);
     plus_lb.list(function(err, list) {
         for (var i = users.length - 1; i >= 0; --i) {
             for (var j = list.length -1; j >= 0; --j) {
