@@ -46,6 +46,7 @@ bot.addListener("message", function(nick, to, text, message) {
     if (!isNaN(numCredits) && numCredits > 0) {
         console.log("credits[0]: " + credits[0]);
         for (var i = users.length - 1; i >= 0; --i) {
+            console.log("users[i]: " + users[i]);
             if (credits[0] === users[i] && credits[0] !== nick) {
                 plusReceiver = users[i];
                 console.log("plusReceiver: " + plusReceiver);
@@ -118,6 +119,8 @@ bot.addListener("kill", function (nick, reason, channels, message) {
 
 bot.addListener("names", function(channel, nicks) {
     users = Object.keys(nicks);
+    console.log(nicks);
+    console.log(Object.keys(nicks));
     plus_lb.list(function(err, list) {
         for (var i = users.length - 1; i >= 0; --i) {
             for (var j = list.length -1; j >= 0; --j) {
