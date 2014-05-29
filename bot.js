@@ -73,7 +73,7 @@ bot.addListener("message", function(nick, to, text, message) {
     }
     if (words[0] === config.botName && typeof words[1] !== 'undefined') {
         if (words[1].indexOf("help") >= 0) {
-             bot.say(to, "\"<nick>+=X\" will give X credits to <nick>. \"/msg credits-bot credits\" will show you how many credits you have.");
+             bot.say(to, "\"<nick>+=X\" will transfer X credits to <nick>. \"/msg credits-bot credits\" will show you how many credits you have.");
         }
     }
 });
