@@ -57,7 +57,13 @@ bot.addListener("message", function(nick, to, text, message) {
     if (typeof plusReceiver !== 'undefined') {
         plus_lb.score(nick, function(err, score) {
             if (score - numCredits >= 0) {
-                plus_lb.incr(plusReceiver, numCredits);
+                plus_lb.score(plusReceiver, function(err, p_score) {
+                    if (p_score < 0) {
+                        plus_lb.add(plusReceiver, 15 + numCredits);
+                    } else {
+                        plus_lb.incr(plusReceiver, numCredits);
+                    }
+                });
                 plus_lb.incr(nick, -numCredits);
                 bot.say(to, "Credits transferred from " + nick + " to " + plusReceiver + ": " + numCredits);
             } else {
