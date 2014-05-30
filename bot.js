@@ -155,3 +155,11 @@ bot.addListener("pm", function(nick, text, message) {
         });
     }
 });
+
+bot.addListener("notice", function(nick, to, text, message) {
+    if (/credits/.test(text)) {
+        plus_lb.score(nick, function(err, score) {
+            bot.notice(nick, score.toString());
+        });
+    }
+});
